@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My_KeepSolid_Internship_app</string>
+    <string name="app_name">My KeepSolid Internship app</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -11,4 +11,11 @@
     <string name="enter_email">Enter email address</string>
     <string name="clear">Clear</string>
     <string name="send">Send</string>
+    <string name="confirm">Confirm</string>
+    <string name="decline">Decline</string>
+    <string name="allow">Allow</string>
+    <string name="sending_message">Sending message ...</string>
+    <string name="error_send_message">User did not verify address!</string>
+    <string name="empty_email">The email should not be empty!</string>
+    <string name="error_enter_email">Incorrect email!</string>
 </resources>

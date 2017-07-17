@@ -9,4 +9,11 @@
     <string name="send">Отправить</string>
     <string name="title_activity_second">Вторая активность</string>
     <string name="title_main_activity">Основная активность</string>
+    <string name="allow">Разрешить</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="decline">Отклонить</string>
+    <string name="error_send_message">Пользователь не подтвердил адрес!</string>
+    <string name="sending_message">Отправка сообщения...</string>
+    <string name="empty_email">Email не должен быть пустым!</string>
+    <string name="error_enter_email">Не корректный email!</string>
 </resources>
