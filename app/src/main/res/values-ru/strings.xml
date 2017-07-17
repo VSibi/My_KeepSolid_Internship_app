@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My_KeepSolid_Internship_app</string>
+    <string name="action_settings">Настройки</string>
+    <string name="clear">Очистить</string>
+    <string name="enter_email">Введите email адррес</string>
+    <string name="navigation_drawer_close">Закрыть боковую панель</string>
+    <string name="navigation_drawer_open">Открыть боковую панель</string>
+    <string name="send">Отправить</string>
+    <string name="title_activity_second">Вторая активность</string>
+    <string name="title_main_activity">Основная активность</string>
+</resources>
