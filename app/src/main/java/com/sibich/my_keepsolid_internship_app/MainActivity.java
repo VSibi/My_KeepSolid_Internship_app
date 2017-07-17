@@ -1,8 +1,9 @@
 package com.sibich.my_keepsolid_internship_app;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -13,9 +14,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final int REQUEST_CODE = 0;
+    private EditText et_enterEmail;
+    private Button b_clear, b_send;
+    private CheckBox chb_allow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,24 +34,77 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        et_enterEmail = (EditText) findViewById(R.id.et_enter_email);
+        chb_allow = (CheckBox) findViewById(R.id.ch_allow);
+
+        b_clear = (Button) findViewById(R.id.b_clear);
+        b_clear.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                et_enterEmail.setText("");
             }
         });
+
+        b_send = (Button) findViewById(R.id.b_send);
+        b_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!et_enterEmail.getText().toString().isEmpty()) {
+                    if (et_enterEmail.getText().toString().contains("@")) {
+                        startSecondActivity();
+                    } else {
+                        Snackbar.make(v, getResources().getString(R.string.error_enter_email), Snackbar.LENGTH_LONG)
+                                .show();
+                    }
+                }
+                else {
+                    Snackbar.make(v, getResources().getString(R.string.empty_email), Snackbar.LENGTH_LONG)
+                            .show();
+                }
+
+
+            }
+        });
+        b_send.setEnabled(false);
+
+        chb_allow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                b_send.setEnabled(isChecked);
+            }
+        });
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
             this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-      //  drawer.setDrawerListener(toggle);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void startSecondActivity() {
+        Intent i = SecondActivity.newIntent(MainActivity.this, et_enterEmail.getText().toString());
+        startActivityForResult(i, REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE) {
+            if (data != null) {
+                if (resultCode == Activity.RESULT_OK) {
+                    et_enterEmail.setText("");
+                } else {
+                    et_enterEmail.setText(SecondActivity.getAnswer(data));
+                    Toast.makeText(this, getResources().getString(R.string.error_send_message), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     @Override
