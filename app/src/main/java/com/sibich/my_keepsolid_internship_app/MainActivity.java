@@ -23,9 +23,9 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final int REQUEST_CODE = 0;
-    private EditText et_enterEmail;
-    private Button b_clear, b_send;
-    private CheckBox chb_allow;
+    private EditText mEnterEmailTextView;
+    private Button mClearButton, mSendButton;
+    private CheckBox mAllowCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,23 +34,23 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        et_enterEmail = (EditText) findViewById(R.id.et_enter_email);
-        chb_allow = (CheckBox) findViewById(R.id.ch_allow);
+        mEnterEmailTextView = (EditText) findViewById(R.id.et_enter_email);
+        mAllowCheckBox = (CheckBox) findViewById(R.id.ch_allow);
 
-        b_clear = (Button) findViewById(R.id.b_clear);
-        b_clear.setOnClickListener(new View.OnClickListener() {
+        mClearButton = (Button) findViewById(R.id.b_clear);
+        mClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                et_enterEmail.setText("");
+                mEnterEmailTextView.setText("");
             }
         });
 
-        b_send = (Button) findViewById(R.id.b_send);
-        b_send.setOnClickListener(new View.OnClickListener() {
+        mSendButton = (Button) findViewById(R.id.b_send);
+        mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!et_enterEmail.getText().toString().isEmpty()) {
-                    if (et_enterEmail.getText().toString().contains("@")) {
+                if (!mEnterEmailTextView.getText().toString().isEmpty()) {
+                    if (mEnterEmailTextView.getText().toString().contains("@")) {
                         startSecondActivity();
                     } else {
                         Snackbar.make(v, getResources().getString(R.string.error_enter_email), Snackbar.LENGTH_LONG)
@@ -65,12 +65,12 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-        b_send.setEnabled(false);
+        mSendButton.setEnabled(false);
 
-        chb_allow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mAllowCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                b_send.setEnabled(isChecked);
+                mSendButton.setEnabled(isChecked);
             }
         });
 
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void startSecondActivity() {
-        Intent i = SecondActivity.newIntent(MainActivity.this, et_enterEmail.getText().toString());
+        Intent i = SecondActivity.newIntent(MainActivity.this, mEnterEmailTextView.getText().toString());
         startActivityForResult(i, REQUEST_CODE);
     }
 
@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == REQUEST_CODE) {
             if (data != null) {
                 if (resultCode == Activity.RESULT_OK) {
-                    et_enterEmail.setText("");
+                    mEnterEmailTextView.setText("");
                 } else {
-                    et_enterEmail.setText(SecondActivity.getAnswer(data));
+                    mEnterEmailTextView.setText(SecondActivity.getAnswer(data));
                     Toast.makeText(this, getResources().getString(R.string.error_send_message), Toast.LENGTH_SHORT).show();
                 }
             }
