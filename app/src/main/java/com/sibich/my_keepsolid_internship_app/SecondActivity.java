@@ -22,8 +22,8 @@ public class SecondActivity extends AppCompatActivity
     private static final String EXTRA_EMAIL = "com.sibich.my_keepsolid_internship_app_email";
     public static final String EXTRA_ANSWER = "com.sibich.my_keepsolid_internship_app_answer";
 
-    private TextView tv_email;
-    private Button b_decline, b_confirm;
+    private TextView mEmailTextView;
+    private Button mDeclineButton, mConfirmButton;
 
     public static Intent newIntent(Context packageContext, String email) {
         Intent i = new Intent(packageContext, SecondActivity.class);
@@ -38,20 +38,20 @@ public class SecondActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        tv_email = (TextView) findViewById(R.id.tv_email);
+        mEmailTextView = (TextView) findViewById(R.id.tv_email);
         String email = getIntent().getStringExtra(EXTRA_EMAIL);
-        tv_email.setText(email);
+        mEmailTextView.setText(email);
 
-        b_decline = (Button) findViewById(R.id.b_decline);
-        b_decline.setOnClickListener(new View.OnClickListener() {
+        mDeclineButton = (Button) findViewById(R.id.b_decline);
+        mDeclineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setAnswer(false);
             }
         });
 
-        b_confirm = (Button) findViewById(R.id.b_confirm);
-        b_confirm.setOnClickListener(new View.OnClickListener() {
+        mConfirmButton = (Button) findViewById(R.id.b_confirm);
+        mConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setAnswer(true);
