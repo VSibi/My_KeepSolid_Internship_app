@@ -4,9 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,18 +15,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.Toast;
+
+import com.sibich.my_keepsolid_internship_app.fragments.OneFragment;
+import com.sibich.my_keepsolid_internship_app.fragments.ThreeFragment;
+import com.sibich.my_keepsolid_internship_app.fragments.TwoFragment;
+
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-    private static final int REQUEST_CODE = 0;
-    private EditText mEnterEmailTextView;
-    private Button mClearButton, mSendButton;
-    private CheckBox mAllowCheckBox;
+        implements NavigationView.OnNavigationItemSelectedListener, TwoFragment.onOkEventListener, ThreeFragment.onOkEventListener {
+
+    private Fragment mFragmentOne, mFragmentTwo, mFragmentThree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,45 +33,15 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mEnterEmailTextView = (EditText) findViewById(R.id.et_enter_email);
-        mAllowCheckBox = (CheckBox) findViewById(R.id.ch_allow);
+        mFragmentOne = new OneFragment();
+        mFragmentTwo = new TwoFragment();
+        mFragmentThree = new ThreeFragment();
 
-        mClearButton = (Button) findViewById(R.id.b_clear);
-        mClearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEnterEmailTextView.setText("");
-            }
-        });
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .add(R.id.fragmentContainer, mFragmentOne)
+                .commit();
 
-        mSendButton = (Button) findViewById(R.id.b_send);
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mEnterEmailTextView.getText().toString().isEmpty()) {
-                    if (mEnterEmailTextView.getText().toString().contains("@")) {
-                        startSecondActivity();
-                    } else {
-                        Snackbar.make(v, getResources().getString(R.string.error_enter_email), Snackbar.LENGTH_LONG)
-                                .show();
-                    }
-                }
-                else {
-                    Snackbar.make(v, getResources().getString(R.string.empty_email), Snackbar.LENGTH_LONG)
-                            .show();
-                }
-
-
-            }
-        });
-        mSendButton.setEnabled(false);
-
-        mAllowCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSendButton.setEnabled(isChecked);
-            }
-        });
 
 
 
@@ -86,25 +55,47 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void startSecondActivity() {
-        Intent i = SecondActivity.newIntent(MainActivity.this, mEnterEmailTextView.getText().toString());
-        startActivityForResult(i, REQUEST_CODE);
+    @Override
+    public void buttonOkPressed() {
+        transactionFragments(CurrentSelectedFragment.MAIN_FRAGMENT);
+    }
+
+    private void transactionFragments(CurrentSelectedFragment curSelFragment) {
+        FragmentManager fm = getSupportFragmentManager();
+
+        switch (curSelFragment){
+            case MAIN_FRAGMENT:
+                fm.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .replace(R.id.fragmentContainer, mFragmentOne)
+                        .commit();
+                break;
+            case TWO_FRAGMENT:
+                fm.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .replace(R.id.fragmentContainer, mFragmentTwo)
+                        .commit();
+                break;
+            case THREE_FRAGMENT:
+                fm.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .replace(R.id.fragmentContainer, mFragmentThree)
+                        .commit();
+                break;
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_CODE) {
             if (data != null) {
                 if (resultCode == Activity.RESULT_OK) {
-                    mEnterEmailTextView.setText("");
+                    transactionFragments(CurrentSelectedFragment.TWO_FRAGMENT);
                 } else {
-                    mEnterEmailTextView.setText(SecondActivity.getAnswer(data));
-                    Toast.makeText(this, getResources().getString(R.string.error_send_message), Toast.LENGTH_SHORT).show();
+                    transactionFragments(CurrentSelectedFragment.THREE_FRAGMENT);
+                  //  Toast.makeText(this, getResources().getString(R.string.error_send_message), Toast.LENGTH_SHORT).show();
                 }
             }
-        }
     }
 
     @Override
@@ -163,4 +154,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

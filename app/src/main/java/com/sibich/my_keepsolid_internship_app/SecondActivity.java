@@ -73,14 +73,14 @@ public class SecondActivity extends AppCompatActivity
         Intent data = new Intent();
         data.putExtra(EXTRA_ANSWER, email);
         if (isAnswer) {
-            Toast.makeText(this, getResources().getString(R.string.sending_message), Toast.LENGTH_SHORT).show();
+            /*Toast.makeText(this, getResources().getString(R.string.sending_message), Toast.LENGTH_SHORT).show();
 
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
             emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Email subject");
             emailIntent.putExtra(Intent.EXTRA_TEXT, "Message body");
             emailIntent.setType("text/plain");
-            startActivity(Intent.createChooser(emailIntent, "Send Email"));
+            startActivity(Intent.createChooser(emailIntent, "Send Email"));*/
 
             setResult(RESULT_OK, data);
         } else {
