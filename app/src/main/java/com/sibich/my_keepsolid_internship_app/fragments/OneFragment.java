@@ -54,7 +54,7 @@ public class OneFragment extends Fragment {
             public void onClick(View v) {
                 if (!mEnterEmailTextView.getText().toString().isEmpty()) {
                     if (mEnterEmailTextView.getText().toString().contains("@")) {
-                        Intent i = SecondActivity.newIntent(getActivity(), mEnterEmailTextView.getText().toString());
+                        Intent i = SecondActivity.newIntent(getActivity(), 2);
                         startActivityForResult(i, REQUEST_CODE);
                     } else {
                         Snackbar.make(rootLayout, getResources().getString(R.string.error_enter_email), Snackbar.LENGTH_LONG)
