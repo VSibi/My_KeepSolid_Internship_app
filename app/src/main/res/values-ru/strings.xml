@@ -16,4 +16,7 @@
     <string name="empty_email">Email не должен быть пустым!</string>
     <string name="error_enter_email">Не корректный email!</string>
     <string name="user_confirmed_address">Пользователь подтвердил адрес!</string>
+    <string name="offline">Офлайн</string>
+    <string name="ok">Ок!</string>
+    <string name="online">Онлайн</string>
 </resources>

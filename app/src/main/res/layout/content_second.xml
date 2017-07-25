@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sibich.my_keepsolid_internship_app.SecondActivity"
     tools:showIn="@layout/app_bar_second">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_margin="20dp" />
+
+    <View style="@style/Divider"/>
+
+    <TextView
+        android:id="@+id/tv_is_online"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_margin="20dp" />
+
+    <View style="@style/Divider"/>
 
     <TextView
         android:id="@+id/tv_email"
@@ -16,6 +37,18 @@
         android:layout_height="wrap_content"
         android:textSize="25sp"
         android:layout_margin="20dp" />
+
+    <View style="@style/Divider"/>
+
+    <TextView
+        android:id="@+id/tv_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_margin="20dp" />
+
+    <View style="@style/Divider"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,8 +71,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:text="@string/confirm"
+            android:text="@string/send"
             android:theme="@style/MyGreenButton" />
     </LinearLayout>
 
 </LinearLayout>
+
+    </ScrollView>

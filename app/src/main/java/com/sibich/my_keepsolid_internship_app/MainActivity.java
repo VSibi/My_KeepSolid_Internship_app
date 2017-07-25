@@ -12,19 +12,39 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+import com.sibich.my_keepsolid_internship_app.adapters.MyRecyclerAdapter;
 import com.sibich.my_keepsolid_internship_app.fragments.OneFragment;
 import com.sibich.my_keepsolid_internship_app.fragments.ThreeFragment;
 import com.sibich.my_keepsolid_internship_app.fragments.TwoFragment;
+import com.sibich.my_keepsolid_internship_app.listeners.OnUserRecyclerItemClickListener;
+import com.sibich.my_keepsolid_internship_app.models.SortEntriesAlphabetical;
+import com.sibich.my_keepsolid_internship_app.models.User;
+import com.sibich.my_keepsolid_internship_app.models.UserLab;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, TwoFragment.onOkEventListener, ThreeFragment.onOkEventListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+     //   implements NavigationView.OnNavigationItemSelectedListener, TwoFragment.onOkEventListener, ThreeFragment.onOkEventListener {
 
-    private Fragment mFragmentOne, mFragmentTwo, mFragmentThree;
+    private static final int REQUEST_CODE = 0;
+
+    private RecyclerView recyclerView;
+    private ArrayList<User> items;
+    private MyRecyclerAdapter adapter;
+
+
+  //  private Fragment mFragmentOne, mFragmentTwo, mFragmentThree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +53,25 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mFragmentOne = new OneFragment();
+        items = UserLab.getInstance().getItems();
+        Collections.sort(items, new SortEntriesAlphabetical());
+
+        recyclerView = (RecyclerView) findViewById(R.id.rv_recycler);
+
+        adapter = new MyRecyclerAdapter(items, this, new OnUserRecyclerItemClickListener() {
+            public void onItemClick(View v, int position) {
+                Intent i = SecondActivity.newIntent(MainActivity.this, items.get(position).getUserId());
+                startActivityForResult(i, REQUEST_CODE);
+            }
+
+        });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+
+
+      /*  mFragmentOne = new OneFragment();
         mFragmentTwo = new TwoFragment();
         mFragmentThree = new ThreeFragment();
 
@@ -41,7 +79,7 @@ public class MainActivity extends AppCompatActivity
         fm.beginTransaction()
                 .add(R.id.fragmentContainer, mFragmentOne)
                 .commit();
-
+*/
 
 
 
@@ -55,12 +93,12 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
+/*    @Override
     public void buttonOkPressed() {
         transactionFragments(CurrentSelectedFragment.MAIN_FRAGMENT);
-    }
+    }*/
 
-    private void transactionFragments(CurrentSelectedFragment curSelFragment) {
+  /*  private void transactionFragments(CurrentSelectedFragment curSelFragment) {
         FragmentManager fm = getSupportFragmentManager();
 
         switch (curSelFragment){
@@ -83,17 +121,17 @@ public class MainActivity extends AppCompatActivity
                         .commit();
                 break;
         }
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
             if (data != null) {
                 if (resultCode == Activity.RESULT_OK) {
-                    transactionFragments(CurrentSelectedFragment.TWO_FRAGMENT);
+                  //  transactionFragments(CurrentSelectedFragment.TWO_FRAGMENT);
                 } else {
-                    transactionFragments(CurrentSelectedFragment.THREE_FRAGMENT);
-                  //  Toast.makeText(this, getResources().getString(R.string.error_send_message), Toast.LENGTH_SHORT).show();
+                  //  transactionFragments(CurrentSelectedFragment.THREE_FRAGMENT);
+                    Toast.makeText(this, getResources().getString(R.string.error_send_message), Toast.LENGTH_SHORT).show();
                 }
             }
     }

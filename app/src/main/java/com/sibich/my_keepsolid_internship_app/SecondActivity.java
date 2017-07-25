@@ -17,17 +17,24 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sibich.my_keepsolid_internship_app.models.User;
+import com.sibich.my_keepsolid_internship_app.models.UserLab;
+
+import java.util.ArrayList;
+
 public class SecondActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private static final String EXTRA_EMAIL = "com.sibich.my_keepsolid_internship_app_email";
+    private static final String EXTRA_ID = "com.sibich.my_keepsolid_internship_app_email";
     public static final String EXTRA_ANSWER = "com.sibich.my_keepsolid_internship_app_answer";
 
-    private TextView mEmailTextView;
+    private TextView mEmailTextView, mIsOnline, mUserName, mCategory;
     private Button mDeclineButton, mConfirmButton;
+    private int mId;
+    private User mUser;
 
-    public static Intent newIntent(Context packageContext, String email) {
+    public static Intent newIntent(Context packageContext, int id) {
         Intent i = new Intent(packageContext, SecondActivity.class);
-        i.putExtra(EXTRA_EMAIL, email);
+        i.putExtra(EXTRA_ID, id);
         return i;
     }
 
@@ -38,9 +45,25 @@ public class SecondActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+         mId = getIntent().getIntExtra(EXTRA_ID, -1);
+        mUser = UserLab.getInstance().getUser(mId);
+
+        mUserName = (TextView) findViewById(R.id.tv_user_name);
+        mUserName.setText(mUser.getUserName());
+
+        mIsOnline = (TextView) findViewById(R.id.tv_is_online);
+        if (mUser.isOnline()) {
+            mIsOnline.setText(getResources().getString(R.string.online));
+        } else {
+            mIsOnline.setText(getResources().getString(R.string.offline));
+        }
+
         mEmailTextView = (TextView) findViewById(R.id.tv_email);
-        String email = getIntent().getStringExtra(EXTRA_EMAIL);
-        mEmailTextView.setText(email);
+        mEmailTextView.setText(mUser.getUserAddress());
+
+
+        mCategory = (TextView) findViewById(R.id.tv_category);
+        mCategory.setText(mUser.getCategory().name());
 
         mDeclineButton = (Button) findViewById(R.id.b_decline);
         mDeclineButton.setOnClickListener(new View.OnClickListener() {
@@ -69,18 +92,18 @@ public class SecondActivity extends AppCompatActivity
     }
 
     private void setAnswer(boolean isAnswer) {
-        String email = getIntent().getStringExtra(EXTRA_EMAIL);
+        String email = getIntent().getStringExtra(EXTRA_ID);
         Intent data = new Intent();
         data.putExtra(EXTRA_ANSWER, email);
         if (isAnswer) {
-            /*Toast.makeText(this, getResources().getString(R.string.sending_message), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.sending_message), Toast.LENGTH_SHORT).show();
 
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{mUser.getUserAddress()});
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Email subject");
             emailIntent.putExtra(Intent.EXTRA_TEXT, "Message body");
             emailIntent.setType("text/plain");
-            startActivity(Intent.createChooser(emailIntent, "Send Email"));*/
+            startActivity(Intent.createChooser(emailIntent, "Send Email"));
 
             setResult(RESULT_OK, data);
         } else {
