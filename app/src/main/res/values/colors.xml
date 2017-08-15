@@ -11,4 +11,6 @@
     <color name="Green">#4caf50</color>
     <color name="Grey">#9f9e9e</color>
 
+    <color name="colorFlatButton">#009688</color>
+
 </resources>

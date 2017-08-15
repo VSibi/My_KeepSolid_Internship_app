@@ -22,6 +22,8 @@
     <string name="ok">Ok!</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>
+    <string name="action_learn_more">Learn more</string>
+    <string name="action_share">Share</string>
 
 
 </resources>
